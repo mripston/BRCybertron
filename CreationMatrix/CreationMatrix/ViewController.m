@@ -29,6 +29,7 @@
 	CYFileInputSource *xml;
 	CYTemplate *xslt;
 	NSError *error;
+	BOOL haveResources;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -44,9 +45,21 @@
 				[self setXslPath:[dir stringByAppendingPathComponent:name]];
 			}
 			if ( xmlPath && xslPath ) {
+				haveResources = YES;
 				break;
 			}
 		}
+	}
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	if ( haveResources == NO ) {
+		NSString *msg = @"Place XML input files and XSL template files to test in the “MatrixResources” directory and re-deploy the app. "
+			@"If any XSL file name contains “to-json” the results will be assumed to be JSON and will have syntax highlighting applied.";
+		UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:msg preferredStyle:UIAlertControllerStyleAlert];
+		[alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil]];
+		[self presentViewController:alert animated:YES completion:nil];
 	}
 }
 
