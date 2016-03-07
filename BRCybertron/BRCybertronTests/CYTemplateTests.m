@@ -1,0 +1,141 @@
+//
+//  CYTemplateTests.m
+//  BRCybertron
+//
+//  Created by Matt on 7/03/16.
+//  Copyright © 2016 Blue Rocket, Inc. All rights reserved.
+//
+
+#import <XCTest/XCTest.h>
+
+#import <libxml/parser.h>
+#import "CYDataInputSource.h"
+#import "CYFileInputSource.h"
+#import "CYTemplate.h"
+
+@interface CYTemplateTests : XCTestCase
+
+@end
+
+@implementation CYTemplateTests
+
+- (NSString *)pathForTestXSLResource:(NSString *)name {
+	return [[NSBundle bundleForClass:[self class]] pathForResource:name ofType:nil inDirectory:@"TestResources"];
+}
+
+- (NSData *)testXSLDataForResource:(NSString *)name {
+	NSString *path = [self pathForTestXSLResource:name];
+	return [NSData dataWithContentsOfFile:path];
+}
+
+- (void)testTransformSimple {
+	NSData *xsltData = [self testXSLDataForResource:@"simple-to-html.xsl"];
+	CYTemplate *tmpl = [CYTemplate templateWithData:xsltData];
+	CYDataInputSource *xml = [[CYDataInputSource alloc] initWithData:[@"<passage><para>Hello, world.</para></passage>" dataUsingEncoding:NSUTF8StringEncoding]
+															 options:CYParsingAsHTML];
+	
+	NSError *error = nil;
+	NSString *result = [tmpl transformToString:xml parameters:nil error:&error];
+	XCTAssertNil(error);
+	NSString *expected = @"<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n"
+						@"<html><body><p>Hello, world.</p></body></html>\n";
+	XCTAssertEqualObjects(expected, result);
+}
+
+- (void)testTransformWithParams {
+	NSData *xsltData = [self testXSLDataForResource:@"params-to-html.xsl"];
+	NSDictionary<NSString *, id> *params = @{@"strength" : @98.9, @"prowess" : @"unparalleled"};
+	CYTemplate *tmpl = [CYTemplate templateWithData:xsltData];
+	CYDataInputSource *xml = [[CYDataInputSource alloc] initWithData:[@"<passage><para>Hello, world.</para></passage>" dataUsingEncoding:NSUTF8StringEncoding]
+															 options:CYParsingAsHTML];
+	
+	NSError *error = nil;
+	NSString *result = [tmpl transformToString:xml parameters:params error:&error];
+	XCTAssertNil(error);
+	NSString *expected = @"<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n"
+						@"<html><body>\n<p>Hello, world.</p>\n<dl>\n<dt>Strength</dt>\n<dd>99%</dd>\n<dt>Prowess</dt>\n<dd>unparalleled</dd>\n</dl>\n</body></html>\n";
+	XCTAssertEqualObjects(expected, result);
+}
+
+- (void)testTransformFileWithParams {
+	NSString *xsltFile = [self pathForTestXSLResource:@"params-to-html.xsl"];
+	CYTemplate *tmpl = [CYTemplate templateWithContentsOfFile:xsltFile];
+	NSString *xmlFile = [self pathForTestXSLResource:@"params-to-html.xml"];
+	CYFileInputSource *xml = [[CYFileInputSource alloc] initWithContentsOfFile:xmlFile options:CYParsingDefaultOptions];
+	NSDictionary<NSString *, id> *params = @{@"strength" : @98.9, @"prowess" : @"unparalleled"};
+	
+	NSError *error = nil;
+	NSString *outPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"params-to-html.html"];
+	[[NSFileManager defaultManager] removeItemAtPath:outPath error:nil];
+	[tmpl transform:xml parameters:params toFile:outPath error:&error];
+	XCTAssertNil(error);
+	NSString *result = [NSString stringWithContentsOfFile:outPath encoding:NSUTF8StringEncoding error:nil];
+	NSString *expected = @"<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n"
+						@"<html><body>\n<p>Hello, world.</p>\n<dl>\n<dt>Strength</dt>\n<dd>99%</dd>\n<dt>Prowess</dt>\n<dd>unparalleled</dd>\n</dl>\n</body></html>\n";
+	XCTAssertEqualObjects(expected, result);
+}
+
+- (void)testTransformJSON {
+	NSData *xsltData = [self testXSLDataForResource:@"simple-to-json.xsl"];
+	CYTemplate *tmpl = [CYTemplate templateWithData:xsltData];
+	CYDataInputSource *xml = [[CYDataInputSource alloc] initWithData:[@"<passage><para>Hello, world.</para><para>Hi, world.</para></passage>" dataUsingEncoding:NSUTF8StringEncoding]
+															 options:CYParsingDefaultOptions];
+	
+	NSError *error = nil;
+	NSString *result = [tmpl transformToString:xml parameters:nil error:&error];
+	XCTAssertNil(error);
+	NSString *expected = @"{\"paras\":[\"Hello, world.\",\"Hi, world.\"]}";
+	XCTAssertEqualObjects(expected, result);
+}
+
+- (void)testTransformFileJSON {
+	NSString *xsltFile = [self pathForTestXSLResource:@"simple-to-json.xsl"];
+	CYTemplate *tmpl = [CYTemplate templateWithContentsOfFile:xsltFile];
+	NSString *xmlFile = [self pathForTestXSLResource:@"simple-to-json.xml"];
+	CYFileInputSource *xml = [[CYFileInputSource alloc] initWithContentsOfFile:xmlFile options:CYParsingDefaultOptions];
+	
+	NSError *error = nil;
+	NSString *outPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"simple-to-json.json"];
+	[[NSFileManager defaultManager] removeItemAtPath:outPath error:nil];
+	[tmpl transform:xml parameters:nil toFile:outPath error:&error];
+	XCTAssertNil(error);
+	NSString *result = [NSString stringWithContentsOfFile:outPath encoding:NSUTF8StringEncoding error:nil];
+	NSString *expected = @"{\"paras\":[\"Hello, world.\",\"Hi, world.\"]}";
+	XCTAssertEqualObjects(expected, result);
+}
+
+- (void)testTransformWithParamsPerformanceFirstTransform {
+	__block NSData *xsltData = [self testXSLDataForResource:@"params-to-html.xsl"];
+	CYDataInputSource *xml = [[CYDataInputSource alloc] initWithData:[@"<passage><para>Hello, world.</para></passage>" dataUsingEncoding:NSUTF8StringEncoding]
+															 options:CYParsingAsHTML];
+	NSDictionary<NSString *, id> *params = @{@"strength" : @98.9, @"prowess" : @"unparalleled"};
+	[self measureBlock:^{
+		CYTemplate *tmpl = [CYTemplate templateWithData:xsltData];
+		@autoreleasepool {
+			NSError *error = nil;
+			NSString *result = [tmpl transformToString:xml parameters:params error:&error];
+			XCTAssertNil(error);
+			XCTAssertNotNil(result);
+		}
+	}];
+}
+
+- (void)testTransformWithParamsPerformanceRepeatTransforms {
+	__block NSData *xsltData = [self testXSLDataForResource:@"params-to-html.xsl"];
+	CYDataInputSource *xml = [[CYDataInputSource alloc] initWithData:[@"<passage><para>Hello, world.</para></passage>" dataUsingEncoding:NSUTF8StringEncoding]
+															 options:CYParsingAsHTML];
+	NSDictionary<NSString *, id> *params = @{@"strength" : @98.9, @"prowess" : @"unparalleled"};
+	[self measureBlock:^{
+		CYTemplate *tmpl = [CYTemplate templateWithData:xsltData];
+		for ( int i = 0; i < 1000; i++ ) {
+			@autoreleasepool {
+				NSError *error = nil;
+				NSString *result = [tmpl transformToString:xml parameters:params error:&error];
+				XCTAssertNil(error);
+				XCTAssertNotNil(result);
+			}
+		}
+	}];
+}
+
+@end
