@@ -61,7 +61,7 @@
 			NSString *result = [t transformToString:x parameters:nil error:&err];
 			NSAttributedString *attributedResult = nil;
 			error = err;
-			if ( [[xslPath lastPathComponent] containsString:@"to-json"] ) {
+			if ( [[xslPath lastPathComponent] rangeOfString:@"to-json"].location != NSNotFound ) {
 				NSData *resultData = [result dataUsingEncoding:NSUTF8StringEncoding];
 				id json = [NSJSONSerialization JSONObjectWithData:resultData options:0 error:nil];
 				JSONSyntaxHighlight *jsh = [[JSONSyntaxHighlight alloc] initWithJSON:json];
