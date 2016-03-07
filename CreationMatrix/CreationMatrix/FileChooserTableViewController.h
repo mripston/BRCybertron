@@ -15,6 +15,13 @@
 @property (nonatomic, weak) id<FileChooserTableViewControllerDelegate> chooserDelegate;
 @property (nonatomic, strong) NSString *fileExtensionFilter;
 
+/**
+ The directory within the main bundle the app looks for XML and XSL files.
+ 
+ @return The directory path.
+ */
++ (NSString *)resourceDir;
+
 @end
 
 @protocol FileChooserTableViewControllerDelegate <NSObject>

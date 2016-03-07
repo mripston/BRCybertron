@@ -22,7 +22,7 @@
 	
 }
 
-- (NSString *)resourceDir {
++ (NSString *)resourceDir {
 	return [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"MatrixResources"];
 }
 
@@ -30,7 +30,7 @@
 	if ( files ) {
 		return files;
 	}
-	NSArray<NSString *> *resources = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self resourceDir] error:nil];
+	NSArray<NSString *> *resources = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[FileChooserTableViewController resourceDir] error:nil];
 	resources = [resources filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF ENDSWITH %@", self.fileExtensionFilter]];
 	files = resources;
 	return resources;
@@ -53,7 +53,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSString *file = [[self resourceDir] stringByAppendingPathComponent:files[indexPath.row]];
+	NSString *file = [[FileChooserTableViewController resourceDir] stringByAppendingPathComponent:files[indexPath.row]];
 	[self.chooserDelegate chooser:self didSelectFile:file];
 }
 
