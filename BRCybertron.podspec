@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.license      = "MIT"
   s.author       = { "Matt Magoffin" => "matt@bluerocket.us" }
 
-  s.platform     = :ios, "7.1"
+  s.ios.deployment_target = "7.1"
 
   s.source       = { :git => "https://github.com/Blue-Rocket/BRCybertron.git",
   					 :tag => s.version.to_s, :submodules => true }
