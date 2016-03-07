@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03E51F274072A79FEEDC01E9 /* libPods-BRCybertronTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B8395833EE270CC412F437B /* libPods-BRCybertronTests.a */; };
 		C908E7C71C8B9DC8002DA8A8 /* libBRCybertron.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C923CED41C8920C000AFD0D5 /* libBRCybertron.a */; };
 		C908E7CE1C8B9E04002DA8A8 /* CYDataInputSourceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C908E7CD1C8B9E04002DA8A8 /* CYDataInputSourceTests.m */; };
 		C908E7CF1C8BA172002DA8A8 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C923CF391C8922C400AFD0D5 /* libxml2.tbd */; };
@@ -73,6 +74,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3CE98406B44E1B767B512004 /* Pods-BRCybertronTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BRCybertronTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BRCybertronTests/Pods-BRCybertronTests.release.xcconfig"; sourceTree = "<group>"; };
+		9B8395833EE270CC412F437B /* libPods-BRCybertronTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BRCybertronTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B603FB3A6728BFCDEFD2775E /* Pods-BRCybertronTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BRCybertronTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BRCybertronTests/Pods-BRCybertronTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C908E7C21C8B9DC8002DA8A8 /* BRCybertron.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BRCybertron.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C908E7C61C8B9DC8002DA8A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C908E7CD1C8B9E04002DA8A8 /* CYDataInputSourceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYDataInputSourceTests.m; sourceTree = "<group>"; };
@@ -165,6 +169,7 @@
 			files = (
 				C908E7CF1C8BA172002DA8A8 /* libxml2.tbd in Frameworks */,
 				C908E7C71C8B9DC8002DA8A8 /* libBRCybertron.a in Frameworks */,
+				03E51F274072A79FEEDC01E9 /* libPods-BRCybertronTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,6 +205,7 @@
 				C9435ED81C8D3A4A00C323E9 /* Packaging */,
 				C923CF3B1C89238900AFD0D5 /* Frameworks */,
 				C923CED51C8920C000AFD0D5 /* Products */,
+				CF77CEFC3A9A5740D9F3DFE2 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -309,6 +315,7 @@
 			isa = PBXGroup;
 			children = (
 				C923CF391C8922C400AFD0D5 /* libxml2.tbd */,
+				9B8395833EE270CC412F437B /* libPods-BRCybertronTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -366,6 +373,15 @@
 			path = Packaging;
 			sourceTree = "<group>";
 		};
+		CF77CEFC3A9A5740D9F3DFE2 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B603FB3A6728BFCDEFD2775E /* Pods-BRCybertronTests.debug.xcconfig */,
+				3CE98406B44E1B767B512004 /* Pods-BRCybertronTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -373,9 +389,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C908E7CC1C8B9DC8002DA8A8 /* Build configuration list for PBXNativeTarget "BRCybertronTests" */;
 			buildPhases = (
+				E9A1B6A962B060781E32434F /* Check Pods Manifest.lock */,
 				C908E7BE1C8B9DC8002DA8A8 /* Sources */,
 				C908E7BF1C8B9DC8002DA8A8 /* Frameworks */,
 				C908E7C01C8B9DC8002DA8A8 /* Resources */,
+				03B84643F4B29182A5525B72 /* Embed Pods Frameworks */,
+				684E939DC91379E13506F968 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -450,6 +469,54 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		03B84643F4B29182A5525B72 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BRCybertronTests/Pods-BRCybertronTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		684E939DC91379E13506F968 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BRCybertronTests/Pods-BRCybertronTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E9A1B6A962B060781E32434F /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		C908E7BE1C8B9DC8002DA8A8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -516,6 +583,7 @@
 /* Begin XCBuildConfiguration section */
 		C908E7CA1C8B9DC8002DA8A8 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B603FB3A6728BFCDEFD2775E /* Pods-BRCybertronTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -532,6 +600,7 @@
 		};
 		C908E7CB1C8B9DC8002DA8A8 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3CE98406B44E1B767B512004 /* Pods-BRCybertronTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				INFOPLIST_FILE = BRCybertronTests/Info.plist;

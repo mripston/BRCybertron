@@ -8,6 +8,8 @@
 
 #import <XCTest/XCTest.h>
 
+#define HC_SHORTHAND
+#import <OCHamcrest/OCHamcrest.h>
 #import <libxml/parser.h>
 #import "CYDataInputSource.h"
 #import "CYFileInputSource.h"
@@ -36,10 +38,10 @@
 	
 	NSError *error = nil;
 	NSString *result = [tmpl transformToString:xml parameters:nil error:&error];
-	XCTAssertNil(error);
+	assertThat(error, nilValue());
 	NSString *expected = @"<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n"
 						@"<html><body><p>Hello, world.</p></body></html>\n";
-	XCTAssertEqualObjects(expected, result);
+	assertThat(result, equalTo(expected));
 }
 
 - (void)testTransformWithParams {
@@ -51,10 +53,10 @@
 	
 	NSError *error = nil;
 	NSString *result = [tmpl transformToString:xml parameters:params error:&error];
-	XCTAssertNil(error);
+	assertThat(error, nilValue());
 	NSString *expected = @"<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n"
 						@"<html><body>\n<p>Hello, world.</p>\n<dl>\n<dt>Strength</dt>\n<dd>99%</dd>\n<dt>Prowess</dt>\n<dd>unparalleled</dd>\n</dl>\n</body></html>\n";
-	XCTAssertEqualObjects(expected, result);
+	assertThat(result, equalTo(expected));
 }
 
 - (void)testTransformFileWithParams {
@@ -68,11 +70,11 @@
 	NSString *outPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"params-to-html.html"];
 	[[NSFileManager defaultManager] removeItemAtPath:outPath error:nil];
 	[tmpl transform:xml parameters:params toFile:outPath error:&error];
-	XCTAssertNil(error);
+	assertThat(error, nilValue());
 	NSString *result = [NSString stringWithContentsOfFile:outPath encoding:NSUTF8StringEncoding error:nil];
 	NSString *expected = @"<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n"
 						@"<html><body>\n<p>Hello, world.</p>\n<dl>\n<dt>Strength</dt>\n<dd>99%</dd>\n<dt>Prowess</dt>\n<dd>unparalleled</dd>\n</dl>\n</body></html>\n";
-	XCTAssertEqualObjects(expected, result);
+	assertThat(result, equalTo(expected));
 }
 
 - (void)testTransformJSON {
@@ -83,9 +85,9 @@
 	
 	NSError *error = nil;
 	NSString *result = [tmpl transformToString:xml parameters:nil error:&error];
-	XCTAssertNil(error);
+	assertThat(error, nilValue());
 	NSString *expected = @"{\"paras\":[\"Hello, world.\",\"Hi, world.\"]}";
-	XCTAssertEqualObjects(expected, result);
+	assertThat(result, equalTo(expected));
 }
 
 - (void)testTransformFileJSON {
@@ -101,7 +103,7 @@
 	XCTAssertNil(error);
 	NSString *result = [NSString stringWithContentsOfFile:outPath encoding:NSUTF8StringEncoding error:nil];
 	NSString *expected = @"{\"paras\":[\"Hello, world.\",\"Hi, world.\"]}";
-	XCTAssertEqualObjects(expected, result);
+	assertThat(result, equalTo(expected));
 }
 
 - (void)testTransformWithParamsPerformanceFirstTransform {
@@ -114,8 +116,8 @@
 		@autoreleasepool {
 			NSError *error = nil;
 			NSString *result = [tmpl transformToString:xml parameters:params error:&error];
-			XCTAssertNil(error);
-			XCTAssertNotNil(result);
+			assertThat(error, nilValue());
+			assertThat(result, notNilValue());
 		}
 	}];
 }
@@ -131,8 +133,8 @@
 			@autoreleasepool {
 				NSError *error = nil;
 				NSString *result = [tmpl transformToString:xml parameters:params error:&error];
-				XCTAssertNil(error);
-				XCTAssertNotNil(result);
+				assertThat(error, nilValue());
+				assertThat(result, notNilValue());
 			}
 		}
 	}];
