@@ -52,6 +52,7 @@
 		C99090B21C8E72880006EFD7 /* CYSimpleEntityResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = C99090B11C8E72880006EFD7 /* CYSimpleEntityResolver.m */; };
 		C99090B51C8E73210006EFD7 /* CYSimpleEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = C99090B41C8E73210006EFD7 /* CYSimpleEntity.m */; };
 		C99090B81C8E75B10006EFD7 /* CYParsingContext.m in Sources */ = {isa = PBXBuildFile; fileRef = C99090B71C8E75B10006EFD7 /* CYParsingContext.m */; };
+		C99090BB1C8EAD090006EFD7 /* CYSimpleEntityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C99090BA1C8EAD090006EFD7 /* CYSimpleEntityTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -172,6 +173,7 @@
 		C99090B61C8E75B10006EFD7 /* CYParsingContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYParsingContext.h; sourceTree = "<group>"; };
 		C99090B71C8E75B10006EFD7 /* CYParsingContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYParsingContext.m; sourceTree = "<group>"; };
 		C99090B91C8E7F270006EFD7 /* CYEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYEntity.h; sourceTree = "<group>"; };
+		C99090BA1C8EAD090006EFD7 /* CYSimpleEntityTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYSimpleEntityTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,6 +202,7 @@
 			children = (
 				C908E7CD1C8B9E04002DA8A8 /* CYDataInputSourceTests.m */,
 				C9435EB01C8D1E5D00C323E9 /* CYFileInputSourceTests.m */,
+				C99090BA1C8EAD090006EFD7 /* CYSimpleEntityTests.m */,
 				C9435EAC1C8CE23700C323E9 /* CYTemplateTests.m */,
 				C9435EAE1C8CE2FF00C323E9 /* TestResources */,
 				C908E7C61C8B9DC8002DA8A8 /* Info.plist */,
@@ -545,6 +548,7 @@
 			files = (
 				C908E7CE1C8B9E04002DA8A8 /* CYDataInputSourceTests.m in Sources */,
 				C9435EAD1C8CE23700C323E9 /* CYTemplateTests.m in Sources */,
+				C99090BB1C8EAD090006EFD7 /* CYSimpleEntityTests.m in Sources */,
 				C9435EB11C8D1E5D00C323E9 /* CYFileInputSourceTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
