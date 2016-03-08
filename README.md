@@ -41,7 +41,7 @@ At this point, `result` contains XML like:
 </output>
 ```
 
-# XML Parsing
+# XML parsing
 
 A big part of any XSLT workflow involves parsing XML. Not only is the input to an
 XSLT transformation XML but the XSLT language itself is XML based. BRCybertron
@@ -50,7 +50,28 @@ API, and provides [CYDataInputSource][CYDataInputSource] for parsing XML held in
 memory via an `NSData` object as well as [CYFileInputSource][CYFileInputSource] for
 parsing XML from a file.
 
-# Entity Resolving
+
+# xsl:import and xsl:include support
+
+When using file-based XSL documents, both `xsl:import` and `xsl:include` statements
+using relative URLs will work as expected. When using a `CYDataInputSource` however,
+you must provide an explicit base URL from which to resolve relative URLs from. For
+example you could configure the base path to be a _virtual_ file within the app's
+main bundle like this:
+
+```objc
+// obtain XSL as data from somewhere...
+NSData *xslData = nil;
+
+// create a base path to a virtual file named "data.xml" within the app bundle
+NSString *basePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"data.xml"];
+CYDataInputSource *xsl = [[CYDataInputSource alloc] initWithData:xslData basePath:basePath options:0];
+
+// create templates instance
+CYTemplate *tmpl = [[CYTemplate alloc] initWithInputSource:xsl];
+```
+
+# Entity resolving
 
 Sometimes you might be faced with XML documents that refer to unresolvable entities,
 for example this document without any DTD:
@@ -90,6 +111,12 @@ how `©` appears):
 </content>
 ```
 
+# Sample app
+
+The `CreationMatrix` project [included in the source repository][sample-app] includes a sample
+application that you can use to test running XSLT transformations on your own data.
+
   [CYInputSource]: https://github.com/Blue-Rocket/BRCybertron/blob/master/BRCybertron/BRCybertron/CYInputSource.h
   [CYDataInputSource]: https://github.com/Blue-Rocket/BRCybertron/blob/master/BRCybertron/BRCybertron/CYDataInputSource.h
   [CYFileInputSource]: https://github.com/Blue-Rocket/BRCybertron/blob/master/BRCybertron/BRCybertron/CYFileInputSource.h
+  [sample-app]: https://github.com/Blue-Rocket/BRCybertron/tree/master/CreationMatrix
