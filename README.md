@@ -91,8 +91,9 @@ entity values:
 [[CYSimpleEntityResolver sharedResolver] addInternalEntities:@{@"copy" : @"&#169;"}];
 ```
 
-By default the XML will be resolved so that the entities are preserved, but you can
-turn on entity substitution using the libxml flag `XML_PARSE_NOENT` like this:
+By default the XML will be resolved so that the entities are preserved, but you
+can turn on entity substitution using the libxml flag `XML_PARSE_NOENT` like
+this:
 
 ```objc
 NSData *data = [@"<content><para>&copy; 2016 Bad XML Citizen</para></content>"
@@ -101,8 +102,8 @@ id<CYInputSource> input = [[CYDataInputSource alloc] initWithData:data
                            options:(CYParsingOptions)(XML_PARSE_NOENT)];
 ```
 
-At this point, if you called `asString:error:` on `input` you'd get the following (notice
-how `©` appears):
+At this point, if you called `asString:error:` on `input` you'd get the
+following (notice how `©` appears):
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -113,8 +114,45 @@ how `©` appears):
 
 # Sample app
 
-The `CreationMatrix` project [included in the source repository][sample-app] includes a sample
-application that you can use to test running XSLT transformations on your own data.
+The `CreationMatrix` project [included in the source repository][sample-app] includes
+a sample application that you can use to test running XSLT transformations on your
+own data.
+
+# Project Integration
+
+You can integrate BRCybertron via [CocoaPods](https://cocoapods.org/) or manually as
+a dependent project.
+
+## via CocoaPods
+
+Install CocoaPods if not already available:
+
+```bash
+$ [sudo] gem install cocoapods
+$ pod setup
+```
+
+Change to the directory of your Xcode project, and create a file named `Podfile` with
+contents similar to this:
+
+	platform :ios, '7.1'
+	pod 'BRCybertron'
+
+Install into your project:
+
+``` bash
+$ pod install
+```
+
+Open your project in Xcode using the **.xcworkspace** file CocoaPods generated.
+
+**Note:** CocoaPods as of version 0.39 might not produce a valid project for this pod.
+You can work around it by running `pod` like this:
+
+``` bash
+$ COCOAPODS_DISABLE_DETERMINISTIC_UUIDS=YES pod install
+```
+
 
   [CYInputSource]: https://github.com/Blue-Rocket/BRCybertron/blob/master/BRCybertron/BRCybertron/CYInputSource.h
   [CYDataInputSource]: https://github.com/Blue-Rocket/BRCybertron/blob/master/BRCybertron/BRCybertron/CYDataInputSource.h
