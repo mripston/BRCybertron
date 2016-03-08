@@ -41,4 +41,23 @@
 	assertThat(ent, nilValue());
 }
 
+- (void)testResetInternal {
+	CYSimpleEntityResolver *resolver = [[CYSimpleEntityResolver alloc] init];
+	[resolver addInternalEntities:@{@"foo" : @"bar"}];
+	
+	CYDataInputSource *input = [[CYDataInputSource alloc] initWithData:[@"<x/>" dataUsingEncoding:NSUTF8StringEncoding] options:0];
+	CYParsingContext *context = [[CYParsingContext alloc] initWithInputSource:input];
+	
+	id<CYEntity> ent;
+	
+	ent = [resolver resolveEntity:@"foo" context:context];
+	assertThat(ent.name, equalTo(@"foo"));
+	assertThat(ent.content, equalTo(@"bar"));
+	
+	[resolver setInternalEntities:nil];
+	
+	ent = [resolver resolveEntity:@"foo" context:context];
+	assertThat(ent, nilValue());
+}
+
 @end
