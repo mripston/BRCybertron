@@ -24,6 +24,7 @@ static NSString * const kShowFileChooserSegue = @"ShowFileChooser";
 @property (strong, nonatomic) IBOutlet UITextField *repeatTextField;
 @property (strong, nonatomic) IBOutlet UIButton *executeButton;
 @property (strong, nonatomic) IBOutlet UIButton *paramsButton;
+@property (strong, nonatomic) IBOutlet UIButton *syntaxHighlightToggleButton;
 @property (strong, nonatomic) IBOutlet UILabel *statusLabel;
 @end
 
@@ -94,6 +95,10 @@ static NSString * const kShowFileChooserSegue = @"ShowFileChooser";
 	}
 }
 
+- (IBAction)toggleHighlight:(id)sender {
+	self.syntaxHighlightToggleButton.selected = !self.syntaxHighlightToggleButton.selected;
+}
+
 - (IBAction)execute:(id)sender {
 	CYTemplate *t = xslt;
 	CYFileInputSource *x = xml;
@@ -134,7 +139,7 @@ static NSString * const kShowFileChooserSegue = @"ShowFileChooser";
 		
 		NSAttributedString *attributedResult = nil;
 		error = err;
-		if ( [[xslPath lastPathComponent] rangeOfString:@"to-json"].location != NSNotFound ) {
+		if ( self.syntaxHighlightToggleButton.selected && [[xslPath lastPathComponent] rangeOfString:@"to-json"].location != NSNotFound ) {
 			NSData *resultData = [result dataUsingEncoding:NSUTF8StringEncoding];
 			id json = [NSJSONSerialization JSONObjectWithData:resultData options:0 error:nil];
 			JSONSyntaxHighlight *jsh = [[JSONSyntaxHighlight alloc] initWithJSON:json];
@@ -179,7 +184,7 @@ static NSString * const kShowFileChooserSegue = @"ShowFileChooser";
 
 - (void)parametersController:(ParametersTableViewController *)controller didUpdateParameters:(NSDictionary<NSString *,NSString *> *)params {
 	parameters = params;
-	self.paramsButton.selected = (params.count > 1);
+	self.paramsButton.selected = (params.count > 0);
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
