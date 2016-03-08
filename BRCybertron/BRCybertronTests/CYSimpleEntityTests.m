@@ -26,4 +26,13 @@
 	assertThat(ent.systemID, nilValue());
 }
 
+- (void)testGetXmlEntity {
+	CYSimpleEntity *ent = [[CYSimpleEntity alloc] initWithName:@"foo" content:@"bar"];
+	
+	NSError *error = nil;
+	xmlEntityPtr xmlEnt = [ent getEntity:&error];
+	assertThat(error, nilValue());
+	XCTAssertTrue(xmlEnt != NULL);
+}
+
 @end
