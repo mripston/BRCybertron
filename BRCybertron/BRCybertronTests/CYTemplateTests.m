@@ -140,4 +140,29 @@
 	}];
 }
 
+- (void)testReadmeExample {
+	id<CYInputSource> input = [[CYDataInputSource alloc] initWithData:
+							   [@"<input><msg>Hello, BRCybertron.</msg></input>" dataUsingEncoding:NSUTF8StringEncoding]
+							   options:CYParsingDefaultOptions];
+	
+	CYTemplate *xslt = [CYTemplate templateWithData:
+						[@"<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' "
+						 @"xmlns:xs='http://www.w3.org/2001/XMLSchema' "
+						 @"exclude-result-prefixes='xs' version='1.0'>"
+						 @"<xsl:output method='xml' encoding='UTF-8' />"
+						 @"<xsl:template match='input'>"
+						 @"<output>"
+						 @"<msg><xsl:value-of select='msg'/></msg>"
+						 @"<msg>More than meets the eye!</msg>"
+						 @"</output>"
+						 @"</xsl:template>"
+						 @"</xsl:stylesheet>"
+						 dataUsingEncoding:NSUTF8StringEncoding]];
+	
+	// run transform, and return results as an XML string
+	NSString *result = [xslt transformToString:input parameters:nil error:nil];
+	assertThat(result, equalTo(@"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+							   @"<output><msg>Hello, BRCybertron.</msg><msg>More than meets the eye!</msg></output>\n"));
+}
+
 @end
