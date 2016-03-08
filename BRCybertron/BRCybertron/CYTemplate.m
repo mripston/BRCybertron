@@ -21,6 +21,13 @@
 	NSError *parsingError;
 }
 
+- (instancetype)init {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnonnull"
+	return [self initWithInputSource:nil];
+#pragma clang diagnostic pop
+}
+
 - (instancetype)initWithInputSource:(id<CYInputSource>)theXsltInputSource {
 	if ( (self = [super init]) ) {
 		xsltInputSource = theXsltInputSource;

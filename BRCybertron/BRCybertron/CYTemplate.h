@@ -36,6 +36,15 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)templateWithData:(NSData *)data;
 
 /**
+ Initialize from an input source.
+ 
+ @param xsltInputSource The input source for the XSLT document.
+ 
+ @return The initialized instance.
+ */
+- (instancetype)initWithInputSource:(id<CYInputSource>)xsltInputSource NS_DESIGNATED_INITIALIZER;
+
+/**
  Perform a transformation of an input document and return the result as a string.
  
  @param input      The XML input document.
