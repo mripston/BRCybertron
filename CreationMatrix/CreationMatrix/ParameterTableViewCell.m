@@ -8,7 +8,7 @@
 
 #import "ParameterTableViewCell.h"
 
-@interface ParameterTableViewCell ()
+@interface ParameterTableViewCell () <UITextFieldDelegate>
 @property (nonatomic, strong) IBOutlet UITextField *nameField;
 @property (nonatomic, strong) IBOutlet UITextField *valueField;
 @end
@@ -29,6 +29,16 @@
 
 - (NSString *)value {
 	return self.valueField.text;
+}
+
+- (void)informDelegateOfChange {
+	[self.parameterDelegate parameterCellDidChange:self];
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+	[ParameterTableViewCell cancelPreviousPerformRequestsWithTarget:self selector:@selector(informDelegateOfChange) object:nil];
+	[self performSelector:@selector(informDelegateOfChange) withObject:nil afterDelay:0.3];
+	return YES;
 }
 
 @end

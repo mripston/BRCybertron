@@ -151,11 +151,17 @@
                                             <rect key="frame" x="8" y="7" width="147" height="30"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="kNQ-8c-SDG" id="bu9-Yw-qEG"/>
+                                            </connections>
                                         </textField>
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Value" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rYK-CO-by7">
                                             <rect key="frame" x="165" y="7" width="147" height="30"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="kNQ-8c-SDG" id="Xoh-gk-3WZ"/>
+                                            </connections>
                                         </textField>
                                     </subviews>
                                     <constraints>

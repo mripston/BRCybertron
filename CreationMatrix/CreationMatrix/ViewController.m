@@ -12,8 +12,12 @@
 #import <JSONSyntaxHighlight/JSONSyntaxHighlight.h>
 
 #import "FileChooserTableViewController.h"
+#import "ParametersTableViewController.h"
 
-@interface ViewController () <UITextFieldDelegate, FileChooserTableViewControllerDelegate>
+static NSString * const kEditParametersSegue = @"EditParameters";
+static NSString * const kShowFileChooserSegue = @"ShowFileChooser";
+
+@interface ViewController () <UITextFieldDelegate, FileChooserTableViewControllerDelegate, ParametersViewControllerDelegate>
 @property (strong, nonatomic) IBOutlet UITextField *inputFileTextField;
 @property (strong, nonatomic) IBOutlet UITextField *xslFileTextField;
 @property (strong, nonatomic) IBOutlet UITextView *resultTextView;
@@ -27,6 +31,7 @@
 	UITextField *chooserField;
 	NSString *xslPath;
 	NSString *xmlPath;
+	NSDictionary<NSString *,NSString *> *parameters;
 	CYFileInputSource *xml;
 	CYTemplate *xslt;
 	NSError *error;
@@ -77,10 +82,15 @@
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-	if ( [segue.identifier isEqualToString:@"ShowFileChooser"] ) {
+	if ( [segue.identifier isEqualToString:kShowFileChooserSegue] ) {
 		FileChooserTableViewController *dest = segue.destinationViewController;
 		dest.fileExtensionFilter = (chooserField == self.xslFileTextField ? @"xsl" : @"xml");
 		dest.chooserDelegate = self;
+	} else if ( [segue.identifier isEqualToString:kEditParametersSegue] ) {
+		UINavigationController *nav = segue.destinationViewController;
+		ParametersTableViewController *dest = (ParametersTableViewController *)nav.topViewController;
+		dest.parametersDelegate = self;
+		dest.parameters = parameters;
 	}
 }
 
@@ -110,7 +120,7 @@
 		for ( int i = 0; i < count; i++ ) {
 			@autoreleasepool {
 				sTime = [NSDate timeIntervalSinceReferenceDate];
-				result = [t transformToString:x parameters:nil error:&err];
+				result = [t transformToString:x parameters:parameters error:&err];
 				currTime = [NSDate timeIntervalSinceReferenceDate] - sTime;
 			}
 			if ( i == 0 ) {
@@ -154,7 +164,7 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
 	chooserField = textField;
-	[self performSegueWithIdentifier:@"ShowFileChooser" sender:self];
+	[self performSegueWithIdentifier:kShowFileChooserSegue sender:self];
 	return NO;
 }
 
@@ -165,6 +175,12 @@
 		[self setXmlPath:path];
 	}
 	[self.navigationController popToViewController:self animated:YES];
+}
+
+- (void)parametersController:(ParametersTableViewController *)controller didUpdateParameters:(NSDictionary<NSString *,NSString *> *)params {
+	parameters = params;
+	self.paramsButton.selected = (params.count > 1);
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

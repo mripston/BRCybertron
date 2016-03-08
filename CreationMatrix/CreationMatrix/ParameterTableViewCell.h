@@ -8,9 +8,24 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol ParameterTableViewCellDelegate;
+
 @interface ParameterTableViewCell : UITableViewCell
+
+@property (nonatomic, weak) id<ParameterTableViewCellDelegate> parameterDelegate;
 
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *value;
+
+@end
+
+@protocol ParameterTableViewCellDelegate <NSObject>
+
+/**
+ Notify the receiver that the name or value have changed.
+ 
+ @param cell The cell whose parameter value has changed.
+ */
+- (void)parameterCellDidChange:(ParameterTableViewCell *)cell;
 
 @end
