@@ -160,6 +160,7 @@
 		C9435EB21C8D1FFC00C323E9 /* CYInputSourceSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYInputSourceSupport.h; sourceTree = "<group>"; };
 		C9435EB31C8D1FFC00C323E9 /* CYInputSourceSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYInputSourceSupport.m; sourceTree = "<group>"; };
 		C9435ED91C8D3A4A00C323E9 /* BRCybertron.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRCybertron.h; sourceTree = "<group>"; };
+		C99090AB1C8E5CDA0006EFD7 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../../README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -367,6 +368,7 @@
 		C9435ED81C8D3A4A00C323E9 /* Packaging */ = {
 			isa = PBXGroup;
 			children = (
+				C99090AB1C8E5CDA0006EFD7 /* README.md */,
 				C9435EAB1C8CA8E300C323E9 /* BRCybertron.podspec */,
 				C9435ED91C8D3A4A00C323E9 /* BRCybertron.h */,
 			);
