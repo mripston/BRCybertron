@@ -15,6 +15,8 @@
 		C9435ECE1C8D387D00C323E9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9435ECD1C8D387D00C323E9 /* Assets.xcassets */; };
 		C9435ED11C8D387D00C323E9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9435ECF1C8D387D00C323E9 /* LaunchScreen.storyboard */; };
 		C9435EE01C8D423E00C323E9 /* FileChooserTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9435EDF1C8D423E00C323E9 /* FileChooserTableViewController.m */; };
+		C99090C01C8EBB5B0006EFD7 /* ParametersTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C99090BF1C8EBB5B0006EFD7 /* ParametersTableViewController.m */; };
+		C99090C31C8EBB780006EFD7 /* ParameterTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C99090C21C8EBB780006EFD7 /* ParameterTableViewCell.m */; };
 		C9D946471C8D4945004832F7 /* MatrixResources in Resources */ = {isa = PBXBuildFile; fileRef = C9D946461C8D4945004832F7 /* MatrixResources */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +35,10 @@
 		C9435EDA1C8D3BDF00C323E9 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		C9435EDE1C8D423E00C323E9 /* FileChooserTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileChooserTableViewController.h; sourceTree = "<group>"; };
 		C9435EDF1C8D423E00C323E9 /* FileChooserTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileChooserTableViewController.m; sourceTree = "<group>"; };
+		C99090BE1C8EBB5B0006EFD7 /* ParametersTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParametersTableViewController.h; sourceTree = "<group>"; };
+		C99090BF1C8EBB5B0006EFD7 /* ParametersTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParametersTableViewController.m; sourceTree = "<group>"; };
+		C99090C11C8EBB780006EFD7 /* ParameterTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParameterTableViewCell.h; sourceTree = "<group>"; };
+		C99090C21C8EBB780006EFD7 /* ParameterTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParameterTableViewCell.m; sourceTree = "<group>"; };
 		C9D946461C8D4945004832F7 /* MatrixResources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = MatrixResources; sourceTree = "<group>"; };
 		D65FA052380CC8D85DA8AC08 /* Pods-CreationMatrix.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CreationMatrix.release.xcconfig"; path = "Pods/Target Support Files/Pods-CreationMatrix/Pods-CreationMatrix.release.xcconfig"; sourceTree = "<group>"; };
 		E99012CD7436995FE10AAE93 /* libPods-CreationMatrix.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CreationMatrix.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -94,6 +100,10 @@
 				C9435EC51C8D387D00C323E9 /* AppDelegate.m */,
 				C9435EDE1C8D423E00C323E9 /* FileChooserTableViewController.h */,
 				C9435EDF1C8D423E00C323E9 /* FileChooserTableViewController.m */,
+				C99090C11C8EBB780006EFD7 /* ParameterTableViewCell.h */,
+				C99090C21C8EBB780006EFD7 /* ParameterTableViewCell.m */,
+				C99090BE1C8EBB5B0006EFD7 /* ParametersTableViewController.h */,
+				C99090BF1C8EBB5B0006EFD7 /* ParametersTableViewController.m */,
 				C9435EC71C8D387D00C323E9 /* ViewController.h */,
 				C9435EC81C8D387D00C323E9 /* ViewController.m */,
 				C9435ECA1C8D387D00C323E9 /* Main.storyboard */,
@@ -236,9 +246,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9435EC91C8D387D00C323E9 /* ViewController.m in Sources */,
+				C99090C01C8EBB5B0006EFD7 /* ParametersTableViewController.m in Sources */,
 				C9435EC61C8D387D00C323E9 /* AppDelegate.m in Sources */,
 				C9435EE01C8D423E00C323E9 /* FileChooserTableViewController.m in Sources */,
 				C9435EC31C8D387D00C323E9 /* main.m in Sources */,
+				C99090C31C8EBB780006EFD7 /* ParameterTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

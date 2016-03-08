@@ -19,6 +19,7 @@
 @property (strong, nonatomic) IBOutlet UITextView *resultTextView;
 @property (strong, nonatomic) IBOutlet UITextField *repeatTextField;
 @property (strong, nonatomic) IBOutlet UIButton *executeButton;
+@property (strong, nonatomic) IBOutlet UIButton *paramsButton;
 @property (strong, nonatomic) IBOutlet UILabel *statusLabel;
 @end
 
