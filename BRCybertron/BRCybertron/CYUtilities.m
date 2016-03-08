@@ -92,7 +92,6 @@ static void xmlStructuredErrorHandler(void *context, xmlErrorPtr error) {
 }
 
 static xmlEntityPtr xmlGetEntity(void *ctx,  const xmlChar *name) {
-	NSLog(@"Resolve entity %s", name);
 	xmlEntityPtr result = NULL;
 
 	CYParsingContext *context = [NSThread currentThread].threadDictionary[kParsingContextThreadKey];
@@ -110,21 +109,7 @@ static xmlEntityPtr xmlGetEntity(void *ctx,  const xmlChar *name) {
 	
 	NSString *entName = [[NSString alloc] initWithUTF8String:(const char *)name];
 	id<CYEntity> entity = [context.entityResolver resolveEntity:entName context:context];
-	if ( !entity ) {
-		return NULL;
-	}
-	// ctx here is the xmlParserCtxtPtr created
-	xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr)ctx;
-	result = xmlNewEntity(ctxt->myDoc, name, XML_INTERNAL_GENERAL_ENTITY,
-						  (const xmlChar *)[entity.externalID UTF8String],
-						  (const xmlChar *)[entity.systemID UTF8String],
-						  (const xmlChar *)[entity.content UTF8String]);
-	
-	BOOL own = (ctxt->myDoc == NULL || ctxt->myDoc->intSubset == NULL);
-	
-	if ( own ) {
-		// TODO: add to context, for freeing up later
-	}
+	result = [entity getEntity:nil];
 	
 	return result;
 }
