@@ -15,6 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface CYDataInputSource : CYInputSourceSupport
 
+/** The base path to treat this input source as, to support relative xsl:import and xsl:include constructs. */
+@property (nonatomic, strong) NSString *basePath;
+
 /**
  Initialize from a NSData instance.
  
@@ -23,7 +26,20 @@ NS_ASSUME_NONNULL_BEGIN
  
  @return The initialized instance.
  */
-- (instancetype)initWithData:(NSData *)theData options:(CYParsingOptions)options NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithData:(NSData *)data options:(CYParsingOptions)options NS_DESIGNATED_INITIALIZER;
+
+/**
+ Initialize from a NSData instance with a specific base path.
+ 
+ @param data     The XML resource.
+ @param basePath The base path to support relative imports.
+ @param options  The parsing options.
+ 
+ @return The initialized instance.
+ */
+- (instancetype)initWithData:(NSData *)data
+					basePath:(NSString *)basePath
+					 options:(CYParsingOptions)options;
 
 @end
 

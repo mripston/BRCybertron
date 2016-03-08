@@ -33,6 +33,12 @@
 	return self;
 }
 
+- (instancetype)initWithData:(NSData *)theData basePath:(NSString *)theBasePath options:(CYParsingOptions)options {
+	self = [self initWithData:theData options:options];
+	self.basePath = theBasePath;
+	return self;
+}
+
 - (void)dealloc {
 	if ( document != NULL ) {
 		xmlFreeDoc(document);
@@ -76,12 +82,14 @@
 		}
 		return NULL;
 	}
+	
+	NSString *basePath = (self.basePath != nil ? self.basePath : @"data.xml");
 
 	[CYUtilities handlePrasing:self inContext:ctxt block:^(CYParsingContext *context) {
 		if ( asHTML ) {
-			doc = htmlCtxtReadMemory(ctxt, [xmlData bytes], (int)[xmlData length], "data.html", NULL, xmlOptions);
+			doc = htmlCtxtReadMemory(ctxt, [xmlData bytes], (int)[xmlData length], [basePath UTF8String], NULL, xmlOptions);
 		} else {
-			doc = xmlCtxtReadMemory(ctxt, [xmlData bytes], (int)[xmlData length], "data.xml", NULL, xmlOptions);
+			doc = xmlCtxtReadMemory(ctxt, [xmlData bytes], (int)[xmlData length], [basePath UTF8String], NULL, xmlOptions);
 		}
 	} finished:^(NSArray<NSError *> * _Nullable errors) {
 		parseErrors = errors;

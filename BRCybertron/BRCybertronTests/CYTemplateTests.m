@@ -165,4 +165,36 @@
 							   @"<output><msg>Hello, BRCybertron.</msg><msg>More than meets the eye!</msg></output>\n"));
 }
 
+- (void)testTransformDataWithImport {
+	NSString *basePath = [[[self pathForTestXSLResource:@"import-to-xml.xsl"] stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"data.xml"];
+	CYDataInputSource *xsl = [[CYDataInputSource alloc] initWithData:[self testXSLDataForResource:@"import-to-xml.xsl"]
+															basePath:basePath
+															 options:0];
+	CYTemplate *tmpl = [[CYTemplate alloc] initWithInputSource:xsl];
+	CYDataInputSource *xml = [[CYDataInputSource alloc] initWithData:[@"<passage><para>Hello, world.</para></passage>" dataUsingEncoding:NSUTF8StringEncoding] options:0];
+	
+	NSError *error = nil;
+	NSString *result = [tmpl transformToString:xml parameters:nil error:&error];
+	assertThat(error, nilValue());
+	NSString *expected = @"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+						@"<section><p>Hello, world.</p></section>\n";
+	assertThat(result, equalTo(expected));
+}
+
+- (void)testTransformDataWithInclude {
+	NSString *basePath = [[[self pathForTestXSLResource:@"include-to-xml.xsl"] stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"data.xml"];
+	CYDataInputSource *xsl = [[CYDataInputSource alloc] initWithData:[self testXSLDataForResource:@"include-to-xml.xsl"]
+															basePath:basePath
+															 options:0];
+	CYTemplate *tmpl = [[CYTemplate alloc] initWithInputSource:xsl];
+	CYDataInputSource *xml = [[CYDataInputSource alloc] initWithData:[@"<passage><para>Hello, world.</para></passage>" dataUsingEncoding:NSUTF8StringEncoding] options:0];
+	
+	NSError *error = nil;
+	NSString *result = [tmpl transformToString:xml parameters:nil error:&error];
+	assertThat(error, nilValue());
+	NSString *expected = @"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+						@"<div><p>Hello, world.</p></div>\n";
+	assertThat(result, equalTo(expected));
+}
+
 @end
