@@ -137,8 +137,10 @@
 	}
 	
 	xmlChar *output = NULL;
-	int outputLength;
-	xsltSaveResultToString(&output, &outputLength, outputDocument, xform);
+	int outputLength = 0;
+	if ( outputDocument ) {
+		xsltSaveResultToString(&output, &outputLength, outputDocument, xform);
+	}
 	
 	if ( params != NULL ) {
 		free(params);
