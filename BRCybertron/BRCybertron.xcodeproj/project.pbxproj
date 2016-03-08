@@ -49,6 +49,9 @@
 		C9435EAF1C8CE2FF00C323E9 /* TestResources in Resources */ = {isa = PBXBuildFile; fileRef = C9435EAE1C8CE2FF00C323E9 /* TestResources */; };
 		C9435EB11C8D1E5D00C323E9 /* CYFileInputSourceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C9435EB01C8D1E5D00C323E9 /* CYFileInputSourceTests.m */; };
 		C9435EB41C8D1FFC00C323E9 /* CYInputSourceSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = C9435EB31C8D1FFC00C323E9 /* CYInputSourceSupport.m */; };
+		C99090B21C8E72880006EFD7 /* CYSimpleEntityResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = C99090B11C8E72880006EFD7 /* CYSimpleEntityResolver.m */; };
+		C99090B51C8E73210006EFD7 /* CYSimpleEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = C99090B41C8E73210006EFD7 /* CYSimpleEntity.m */; };
+		C99090B81C8E75B10006EFD7 /* CYParsingContext.m in Sources */ = {isa = PBXBuildFile; fileRef = C99090B71C8E75B10006EFD7 /* CYParsingContext.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -161,6 +164,14 @@
 		C9435EB31C8D1FFC00C323E9 /* CYInputSourceSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYInputSourceSupport.m; sourceTree = "<group>"; };
 		C9435ED91C8D3A4A00C323E9 /* BRCybertron.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRCybertron.h; sourceTree = "<group>"; };
 		C99090AB1C8E5CDA0006EFD7 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../../README.md; sourceTree = "<group>"; };
+		C99090AF1C8E716F0006EFD7 /* CYEntityResolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYEntityResolver.h; sourceTree = "<group>"; };
+		C99090B01C8E72880006EFD7 /* CYSimpleEntityResolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYSimpleEntityResolver.h; sourceTree = "<group>"; };
+		C99090B11C8E72880006EFD7 /* CYSimpleEntityResolver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYSimpleEntityResolver.m; sourceTree = "<group>"; };
+		C99090B31C8E73210006EFD7 /* CYSimpleEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYSimpleEntity.h; sourceTree = "<group>"; };
+		C99090B41C8E73210006EFD7 /* CYSimpleEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYSimpleEntity.m; sourceTree = "<group>"; };
+		C99090B61C8E75B10006EFD7 /* CYParsingContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYParsingContext.h; sourceTree = "<group>"; };
+		C99090B71C8E75B10006EFD7 /* CYParsingContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYParsingContext.m; sourceTree = "<group>"; };
+		C99090B91C8E7F270006EFD7 /* CYEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYEntity.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -226,11 +237,19 @@
 				C9435E9E1C8CA8B600C323E9 /* CYConstants.m */,
 				C9435EA31C8CA8B600C323E9 /* CYDataInputSource.h */,
 				C9435E9B1C8CA8B600C323E9 /* CYDataInputSource.m */,
+				C99090B91C8E7F270006EFD7 /* CYEntity.h */,
+				C99090AF1C8E716F0006EFD7 /* CYEntityResolver.h */,
 				C9435EA01C8CA8B600C323E9 /* CYFileInputSource.h */,
 				C9435EA21C8CA8B600C323E9 /* CYFileInputSource.m */,
 				C9435EA11C8CA8B600C323E9 /* CYInputSource.h */,
 				C9435EB21C8D1FFC00C323E9 /* CYInputSourceSupport.h */,
 				C9435EB31C8D1FFC00C323E9 /* CYInputSourceSupport.m */,
+				C99090B61C8E75B10006EFD7 /* CYParsingContext.h */,
+				C99090B71C8E75B10006EFD7 /* CYParsingContext.m */,
+				C99090B31C8E73210006EFD7 /* CYSimpleEntity.h */,
+				C99090B41C8E73210006EFD7 /* CYSimpleEntity.m */,
+				C99090B01C8E72880006EFD7 /* CYSimpleEntityResolver.h */,
+				C99090B11C8E72880006EFD7 /* CYSimpleEntityResolver.m */,
 				C9435EA51C8CA8B600C323E9 /* CYTemplate.h */,
 				C9435E9F1C8CA8B600C323E9 /* CYTemplate.m */,
 				C9435E9D1C8CA8B600C323E9 /* CYUtilities.h */,
@@ -546,6 +565,7 @@
 				C923CF0E1C89215500AFD0D5 /* extensions.c in Sources */,
 				C9435EA81C8CA8B600C323E9 /* CYConstants.m in Sources */,
 				C923CF371C8921A300AFD0D5 /* saxon.c in Sources */,
+				C99090B81C8E75B10006EFD7 /* CYParsingContext.m in Sources */,
 				C9435EA61C8CA8B600C323E9 /* CYDataInputSource.m in Sources */,
 				C923CF1E1C89215500AFD0D5 /* variables.c in Sources */,
 				C923CF101C89215500AFD0D5 /* imports.c in Sources */,
@@ -554,11 +574,13 @@
 				C9435EA71C8CA8B600C323E9 /* CYUtilities.m in Sources */,
 				C923CF141C89215500AFD0D5 /* pattern.c in Sources */,
 				C923CF1F1C89215500AFD0D5 /* xsltlocale.c in Sources */,
+				C99090B21C8E72880006EFD7 /* CYSimpleEntityResolver.m in Sources */,
 				C923CF351C8921A300AFD0D5 /* exslt.c in Sources */,
 				C923CF361C8921A300AFD0D5 /* math.c in Sources */,
 				C923CF331C8921A300AFD0D5 /* common.c in Sources */,
 				C923CF1D1C89215500AFD0D5 /* templates.c in Sources */,
 				C923CF121C89215500AFD0D5 /* namespaces.c in Sources */,
+				C99090B51C8E73210006EFD7 /* CYSimpleEntity.m in Sources */,
 				C923CF131C89215500AFD0D5 /* numbers.c in Sources */,
 				C923CF161C89215500AFD0D5 /* transform.c in Sources */,
 				C923CF171C89215500AFD0D5 /* xslt.c in Sources */,

@@ -15,12 +15,6 @@
 #import "CYConstants.h"
 #import "CYUtilities.h"
 
-/*
-static xmlEntityPtr xmlGetEntity(void *ctx, const xmlChar *name) {
-	return NULL;
-}
-*/
-
 @implementation CYDataInputSource {
 	NSData *data;
 	xmlDocPtr document;
@@ -82,8 +76,8 @@ static xmlEntityPtr xmlGetEntity(void *ctx, const xmlChar *name) {
 		}
 		return NULL;
 	}
-	
-	[CYUtilities captureParsingErrors:^{
+
+	[CYUtilities handlePrasing:self inContext:ctxt block:^(CYParsingContext *context) {
 		if ( asHTML ) {
 			doc = htmlCtxtReadMemory(ctxt, [xmlData bytes], (int)[xmlData length], "data.html", NULL, xmlOptions);
 		} else {

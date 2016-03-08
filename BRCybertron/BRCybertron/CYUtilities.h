@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+#import <libxml/tree.h>
+#import "CYParsingContext.h"
+
+@protocol CYInputSource;
+
 NS_ASSUME_NONNULL_BEGIN
 
 /**
@@ -16,13 +21,20 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CYUtilities : NSObject
 
 /**
- Execute a block on the calling thead followed by a callback block with any errors captured from @c libxml during 
- the executino of the block.
+ Handle parsing XML with support for capturing parsing errros and handling entity resolution. The @c block function
+ will be invoked on the calling thread and passed a new parsing context instance. When the block returns, the 
+ @c callback block will be invoked (also on the calling thread) and passed any errors captured from @c libxml during
+ the execution of @c block.
  
- @param block    The block that exercises libxml functions and might generate errors in the process.
+ @param input    The input source that is going to be parsed in @c block.
+ @param block    The block that exercises libxml functions and might generate errors in the process. The block will be passed a @c CYParsingContext
+                 with properties configuerd to aid parsing.
  @param callback A block that will be invoked after the completion of @c block, with an array of errors or @c nil if no errors were generated.
  */
-+ (void)captureParsingErrors:(void (^)(void))block finished:(void (^)(NSArray<NSError *> * _Nullable errors))callback;
++ (void)handlePrasing:(id<CYInputSource>)input
+			inContext:(xmlParserCtxtPtr)parserContext
+				block:(void (^)(CYParsingContext *context))block
+			 finished:(void (^)(NSArray<NSError *> * _Nullable errors))callback;
 
 @end
 

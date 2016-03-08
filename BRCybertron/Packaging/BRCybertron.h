@@ -7,6 +7,7 @@
 //
 
 #import <BRCybertron/CYConstants.h>
+#import <BRCybertron/CYEntityResolver.h>
 #import <BRCybertron/CYDataInputSource.h>
 #import <BRCybertron/CYFileInputSource.h>
 #import <BRCybertron/CYInputSource.h>

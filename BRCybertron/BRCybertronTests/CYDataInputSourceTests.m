@@ -8,14 +8,22 @@
 
 #import <XCTest/XCTest.h>
 
+#define HC_SHORTHAND
+#import <OCHamcrest/OCHamcrest.h>
 #import <libxml/parser.h>
 #import "CYDataInputSource.h"
+#import "CYSimpleEntityResolver.h"
 
 @interface CYDataInputSourceTests : XCTestCase
 
 @end
 
 @implementation CYDataInputSourceTests
+
+- (void)tearDown {
+	[[CYSimpleEntityResolver sharedResolver] setInternalEntities:nil];
+	[super tearDown];
+}
 
 - (void)testParseSimple {
 	NSData *data = [@"<?xml version=\"1.0\" encoding=\"UTF-8\"?><section><p>Hello, world.</p></section>" dataUsingEncoding:NSUTF8StringEncoding];
@@ -67,7 +75,7 @@
 	XCTAssertNotNil(error);
 }
 
-- (void)testParseWithUnknownEntities {
+- (void)testParseWithUnknownEntity {
 	NSData *data = [@"<section><p>&emsp;</p></section>" dataUsingEncoding:NSUTF8StringEncoding];
 	CYDataInputSource *input = [[CYDataInputSource alloc] initWithData:data options:0];
 	
@@ -75,6 +83,32 @@
 	xmlDocPtr doc = [input getDocument:&error];
 	XCTAssertTrue(doc == NULL);
 	XCTAssertNotNil(error);
+}
+
+- (void)testParseWithResolvedEntity {
+	[[CYSimpleEntityResolver sharedResolver] setInternalEntities:@{@"emsp" : @"&#160;"}];
+	NSData *data = [@"<section><p>&emsp;</p></section>" dataUsingEncoding:NSUTF8StringEncoding];
+	CYDataInputSource *input = [[CYDataInputSource alloc] initWithData:data options:0];
+	
+	NSError *error = nil;
+	NSString *result = [input asString:NO error:&error];
+	assertThat(error, nilValue());
+	NSString *expected = @"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+						@"<section><p>&emsp;</p></section>\n";
+	assertThat(expected, equalTo(result));
+}
+
+- (void)testParseWithResolvedEntitySubstitute {
+	[[CYSimpleEntityResolver sharedResolver] setInternalEntities:@{@"copy" : @"&#169;"}];
+	NSData *data = [@"<section><p>&copy;</p></section>" dataUsingEncoding:NSUTF8StringEncoding];
+	CYDataInputSource *input = [[CYDataInputSource alloc] initWithData:data options:(CYParsingOptions)(XML_PARSE_NOENT)];
+	
+	NSError *error = nil;
+	NSString *result = [input asString:NO error:&error];
+	assertThat(error, nilValue());
+	NSString *expected = @"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+						@"<section><p>\u00a9</p></section>\n";
+	assertThat(expected, equalTo(result));
 }
 
 #pragma mark - HTML support

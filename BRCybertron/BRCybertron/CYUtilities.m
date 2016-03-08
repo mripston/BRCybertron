@@ -9,29 +9,44 @@
 #import "CYUtilities.h"
 
 #import <libxml/parser.h>
+#import <libxml/SAX2.h>
 #import "CYConstants.h"
+#import "CYSimpleEntityResolver.h"
 #import "CYInputSource.h"
 
-static NSString * const kParsingErrorsThreadKey = @"CYDataInputSource.Errors";
+static NSString * const kParsingContextThreadKey = @"CYUtilities.ParsingContext";
 
 static void xmlStructuredErrorHandler(void *context, xmlErrorPtr error);
+static xmlEntityPtr xmlGetEntity(void *ctx,  const xmlChar *name);
 
 @implementation CYUtilities
 
-+ (void)captureParsingErrors:(void (^)(void))block finished:(void (^)(NSArray<NSError *> * _Nullable errors))callback {
-	[[NSThread currentThread].threadDictionary removeObjectForKey:kParsingErrorsThreadKey];
++ (void)handlePrasing:(id<CYInputSource>)input
+			inContext:(xmlParserCtxtPtr)parserContext
+				block:(void (^)(CYParsingContext *context))block
+			 finished:(void (^)(NSArray<NSError *> * _Nullable errors))callback {
+	CYParsingContext *context = [[CYParsingContext alloc] initWithInputSource:input];
+	
+	// could provide custom entity resolver via property in CYInputSource, for now set to default
+	context.entityResolver = [CYSimpleEntityResolver sharedResolver];
+	
+	// set up entity hook, unless one already provided
+	context.getEntityFn = parserContext->sax->getEntity;
+	parserContext->sax->getEntity = &xmlGetEntity;
+	
+	[NSThread currentThread].threadDictionary[kParsingContextThreadKey] = context;
 	xmlSetStructuredErrorFunc(NULL, &xmlStructuredErrorHandler);
 	@try {
 		if ( block ) {
-			block();
+			block(context);
 		}
 	}
 	@finally {
-		NSArray<NSError *> *errors = [NSThread currentThread].threadDictionary[kParsingErrorsThreadKey];
+		CYParsingContext *context = [NSThread currentThread].threadDictionary[kParsingContextThreadKey];
 		if ( callback ) {
-			callback(errors);
+			callback(context.errors);
 		}
-		[[NSThread currentThread].threadDictionary removeObjectForKey:kParsingErrorsThreadKey];
+		[[NSThread currentThread].threadDictionary removeObjectForKey:kParsingContextThreadKey];
 	}
 }
 
@@ -65,10 +80,51 @@ static void xmlStructuredErrorHandler(void *context, xmlErrorPtr error) {
 	if ( xmlCode ) {
 		info[@"libxmlCode"] = @(xmlCode);
 	}
-	NSMutableArray *errors = [NSThread currentThread].threadDictionary[kParsingErrorsThreadKey];
-	if ( !errors ) {
-		errors = [[NSMutableArray alloc] initWithCapacity:2];
-		[NSThread currentThread].threadDictionary[kParsingErrorsThreadKey] = errors;
+	NSError *finalError = [NSError errorWithDomain:CYErrorDomain code:CYParsingErrorParsingFailed userInfo:info];
+	CYParsingContext *ctx = [NSThread currentThread].threadDictionary[kParsingContextThreadKey];
+	NSArray *errors = ctx.errors;
+	if ( errors ) {
+		errors = [errors arrayByAddingObject:finalError];
+	} else {
+		errors = [[NSArray alloc] initWithObjects:finalError, nil];
 	}
-	[errors addObject:[NSError errorWithDomain:CYErrorDomain code:CYParsingErrorParsingFailed userInfo:info]];
+	ctx.errors = errors;
+}
+
+static xmlEntityPtr xmlGetEntity(void *ctx,  const xmlChar *name) {
+	NSLog(@"Resolve entity %s", name);
+	xmlEntityPtr result = NULL;
+
+	CYParsingContext *context = [NSThread currentThread].threadDictionary[kParsingContextThreadKey];
+	if ( !context ) {
+		return NULL;
+	}
+	
+	// try internal first
+	if ( context.getEntityFn ) {
+		result = context.getEntityFn(ctx, name);
+		if ( result ) {
+			return result;
+		}
+	}
+	
+	NSString *entName = [[NSString alloc] initWithUTF8String:(const char *)name];
+	id<CYEntity> entity = [context.entityResolver resolveEntity:entName context:context];
+	if ( !entity ) {
+		return NULL;
+	}
+	// ctx here is the xmlParserCtxtPtr created
+	xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr)ctx;
+	result = xmlNewEntity(ctxt->myDoc, name, XML_INTERNAL_GENERAL_ENTITY,
+						  (const xmlChar *)[entity.externalID UTF8String],
+						  (const xmlChar *)[entity.systemID UTF8String],
+						  (const xmlChar *)[entity.content UTF8String]);
+	
+	BOOL own = (ctxt->myDoc == NULL || ctxt->myDoc->intSubset == NULL);
+	
+	if ( own ) {
+		// TODO: add to context, for freeing up later
+	}
+	
+	return result;
 }

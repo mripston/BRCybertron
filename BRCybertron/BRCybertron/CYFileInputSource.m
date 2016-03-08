@@ -73,7 +73,7 @@
 		return NULL;
 	}
 	
-	[CYUtilities captureParsingErrors:^{
+	[CYUtilities handlePrasing:self inContext:ctxt block:^(CYParsingContext *context) {
 		if ( asHTML ) {
 			doc = htmlCtxtReadFile(ctxt, [path UTF8String], NULL, xmlOptions);
 		} else {
