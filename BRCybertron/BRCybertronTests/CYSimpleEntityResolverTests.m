@@ -3,7 +3,7 @@
 //  BRCybertron
 //
 //  Created by Matt on 8/03/16.
-//  Copyright © 2016 Blue Rocket, Inc. All rights reserved.
+//  Copyright © 2016 Blue Rocket, Inc. Distributable under the terms of the MIT License.
 //
 
 #import <XCTest/XCTest.h>
