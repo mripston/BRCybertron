@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '646C3B88E906E174FFEC5FC9'
+               BlueprintIdentifier = '4C6C3852586CF72DC7DBAAD3'
                BlueprintName = 'BRCybertron'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libBRCybertron.a'>

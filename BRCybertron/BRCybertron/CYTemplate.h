@@ -9,13 +9,32 @@
 #import <Foundation/Foundation.h>
 
 @protocol CYInputSource;
+@protocol CYInputSourceResolver;
 
 NS_ASSUME_NONNULL_BEGIN
+
+/**
+ Error codes that occur during executing XSTL.
+ */
+typedef enum : NSInteger {
+	
+	/** An internal memory allocation failed. */
+	CYTemplateErrorAllocationFailed = 200,
+	
+	/** A general XSTL execution error. */
+	CYTemplateErrorExecutionFailure	= 201,
+	
+} CYTemplateError;
 
 /**
  A parsed XSLT template object that can be used repeatably to transform XML documents.
  */
 @interface CYTemplate : NSObject
+
+/**
+ A resolver to use when parsing XSLT to handle constructs like @c xsl:import.
+ */
+@property (nonatomic, strong) id<CYInputSourceResolver> inputSourceResolver;
 
 /**
  Get a template from an XSTL file using all default options.

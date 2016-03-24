@@ -55,7 +55,7 @@ parsing XML from a file.
 
 When using file-based XSL documents, both `xsl:import` and `xsl:include` statements
 using relative URLs will work as expected. When using a `CYDataInputSource` however,
-you must provide an explicit base URL from which to resolve relative URLs from. For
+you can provide an explicit base URL from which to resolve relative URLs from. For
 example you could configure the base path to be a _virtual_ file within the app's
 main bundle like this:
 
@@ -70,6 +70,23 @@ CYDataInputSource *xsl = [[CYDataInputSource alloc] initWithData:xslData basePat
 // create templates instance
 CYTemplate *tmpl = [[CYTemplate alloc] initWithInputSource:xsl];
 ```
+
+More generally, however, you can make use of the `CYInputSourceResolver` API to
+resolve these resources as needed. The [CYBundleInputSourceResolver][CYBundleInputSourceResolver]
+class is provided for loading resources from a bundle. The previous example could be
+rewritten to use that class like this:
+
+```objc
+// obtain XSL as data from somewhere...
+NSData *xslData = nil;
+
+// create template instance
+CYTemplate *tmpl = [CYTemplate templateWithData:xslData];
+
+// add bundle resolver (using the main bundle)
+tmpl.inputSourceResolver = [CYBundleInputSourceResolver new];
+```
+
 
 # Entity resolving
 
@@ -154,6 +171,7 @@ $ COCOAPODS_DISABLE_DETERMINISTIC_UUIDS=YES pod install
 ```
 
 
+  [CYBundleInputSourceResolver]:  https://github.com/Blue-Rocket/BRCybertron/blob/master/BRCybertron/BRCybertron/CYBundleInputSourceResolver.h
   [CYInputSource]: https://github.com/Blue-Rocket/BRCybertron/blob/master/BRCybertron/BRCybertron/CYInputSource.h
   [CYDataInputSource]: https://github.com/Blue-Rocket/BRCybertron/blob/master/BRCybertron/BRCybertron/CYDataInputSource.h
   [CYFileInputSource]: https://github.com/Blue-Rocket/BRCybertron/blob/master/BRCybertron/BRCybertron/CYFileInputSource.h

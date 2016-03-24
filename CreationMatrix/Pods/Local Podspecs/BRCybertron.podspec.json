@@ -45,8 +45,8 @@
         ]
       },
       "source_files": [
-        "BRCybertron/BRCybertron/*.{h,m}",
-        "BRCybertron/Packaging/*.h"
+        "BRCybertron/Packaging/BRCybertron.h",
+        "BRCybertron/BRCybertron"
       ]
     }
   ]

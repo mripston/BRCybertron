@@ -11,4 +11,5 @@
 #import <BRCybertron/CYDataInputSource.h>
 #import <BRCybertron/CYFileInputSource.h>
 #import <BRCybertron/CYInputSource.h>
+#import <BRCybertron/CYInputSourceResolver.h>
 #import <BRCybertron/CYTemplate.h>

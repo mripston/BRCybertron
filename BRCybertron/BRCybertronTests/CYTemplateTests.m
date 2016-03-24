@@ -3,7 +3,7 @@
 //  BRCybertron
 //
 //  Created by Matt on 7/03/16.
-//  Copyright © 2016 Blue Rocket, Inc. All rights reserved.
+//  Copyright © 2016 Blue Rocket, Inc. Distributable under the terms of the MIT License.
 //
 
 #import <XCTest/XCTest.h>
@@ -11,6 +11,7 @@
 #define HC_SHORTHAND
 #import <OCHamcrest/OCHamcrest.h>
 #import <libxml/parser.h>
+#import "CYBundleInputSourceResolver.h"
 #import "CYDataInputSource.h"
 #import "CYFileInputSource.h"
 #import "CYTemplate.h"
@@ -194,6 +195,21 @@
 	assertThat(error, nilValue());
 	NSString *expected = @"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 						@"<div><p>Hello, world.</p></div>\n";
+	assertThat(result, equalTo(expected));
+}
+
+- (void)testTransformWithInputSourceResolverImport {
+	NSBundle *bundle = [NSBundle bundleWithPath:[[[NSBundle bundleForClass:[self class]] bundlePath] stringByAppendingPathComponent:@"TestResources"]];
+	CYBundleInputSourceResolver *resolver = [[CYBundleInputSourceResolver alloc] initWithBundle:bundle];
+	CYDataInputSource *xsl = [[CYDataInputSource alloc] initWithData:[self testXSLDataForResource:@"import-to-xml.xsl"] options:0];
+	CYTemplate *tmpl = [[CYTemplate alloc] initWithInputSource:xsl];
+	tmpl.inputSourceResolver = resolver;
+	CYDataInputSource *xml = [[CYDataInputSource alloc] initWithData:[@"<passage><para>Hello, world.</para></passage>" dataUsingEncoding:NSUTF8StringEncoding] options:0];
+	NSError *error = nil;
+	NSString *result = [tmpl transformToString:xml parameters:nil error:&error];
+	assertThat(error, nilValue());
+	NSString *expected = @"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+						@"<section><p>Hello, world.</p></section>\n";
 	assertThat(result, equalTo(expected));
 }
 

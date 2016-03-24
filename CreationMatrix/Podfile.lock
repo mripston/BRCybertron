@@ -15,7 +15,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  BRCybertron: e29be6c5ac5dea88395964001beb48d619ef7f28
+  BRCybertron: a2e74eea9a1d53e854befbc12303fe8918cc87dd
   JSONSyntaxHighlight: 8685d8ad0259b909dc97a829fdfbefbec363f449
 
 COCOAPODS: 0.39.0

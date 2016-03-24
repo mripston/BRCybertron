@@ -9,16 +9,31 @@
 #import "CYTemplate.h"
 
 #import <libxml/parser.h>
+#import <libxslt/documents.h>
 #import <libxslt/transform.h>
 #import <libxslt/xsltInternals.h>
 #import <libxslt/xsltutils.h>
 #import "CYDataInputSource.h"
 #import "CYFileInputSource.h"
+#import "CYInputSourceResolver.h"
+#import "CYTemplateContext.h"
+
+static xmlDocPtr xsltLoaderFunc(const xmlChar * URI, xmlDictPtr dict, int options, void *ctxt, xsltLoadType type);
+static void xsltGenericErrorFunc(void *ctx, const char *msg, ...);
+static xsltDocLoaderFunc xsltDocBuiltInLoader;
+
+
+static NSString * const kTemplateContextThreadKey = @"CYTemplate.Context";
 
 @implementation CYTemplate {
 	id<CYInputSource> xsltInputSource;
 	xsltStylesheetPtr xslt;
 	NSError *parsingError;
+}
+
++ (void)initialize {
+	xsltDocBuiltInLoader = xsltDocDefaultLoader;
+	xsltSetLoaderFunc(&xsltLoaderFunc);
 }
 
 - (instancetype)init {
@@ -115,50 +130,22 @@
 }
 
 - (NSString *)transformToString:(id<CYInputSource>)input parameters:(nullable NSDictionary<NSString *, id> *)parameters error:(NSError **)error {
-	xmlDocPtr inputDocument = [input getDocument:error];
-	if ( inputDocument == NULL ) {
-		return nil;
-	}
+	__block NSString *result = nil;
 	
-	NSMutableDictionary *xpathParameters = [parameters mutableCopy]; // to keep XPath converted values in memory during transform
-	const char **params = [self convertParameters:parameters toXSLTForm:xpathParameters];
-	
-	xmlDocPtr outputDocument = NULL;
-	xsltTransformContextPtr ctxt = NULL;
-	xsltStylesheetPtr xform = [self xsltStylesheet];
-	if ( xform == NULL ) {
-		if ( error && parsingError ) {
-			*error = parsingError;
+	[self handleExecution:input parameters:parameters finished:^(xmlDocPtr outputDocument, NSArray<NSError *> * _Nullable errors) {
+		if ( outputDocument ) {
+			xmlChar *output = NULL;
+			int outputLength = 0;
+			xsltSaveResultToString(&output, &outputLength, outputDocument, [self xsltStylesheet]);
+			if ( output != NULL ) {
+				result = [NSString stringWithUTF8String:(char *)output];
+				xmlFree(output);
+			}
+		} else if ( error ) {
+			*error = [errors firstObject];
 		}
-	} else {
-		ctxt = xsltNewTransformContext(xform, inputDocument);
-		// TODO: xsltSetCtxtParseOptions(ctxt, options);
-		outputDocument = xsltApplyStylesheetUser(xform, inputDocument, params, NULL, NULL, ctxt);
-	}
-	
-	xmlChar *output = NULL;
-	int outputLength = 0;
-	if ( outputDocument ) {
-		xsltSaveResultToString(&output, &outputLength, outputDocument, xform);
-	}
-	
-	if ( params != NULL ) {
-		free(params);
-	}
-	xpathParameters = nil;
-	
-	NSString *result = nil;
-	if ( output != NULL ) {
-		result = [NSString stringWithUTF8String:(char *)output];
-		xmlFree(output);
-	}
-	if ( outputDocument != NULL ) {
-		xmlFreeDoc(outputDocument);
-	}
-	if ( ctxt != NULL ) {
-		xsltFreeTransformContext(ctxt);
-	}
-	
+	}];
+
 	return result;
 }
 
@@ -166,28 +153,49 @@
 	   parameters:(NSDictionary<NSString *,id> *)parameters
 		   toFile:(NSString *)filePath
 			error:(NSError * _Nullable __autoreleasing *)error {
-	xmlDocPtr inputDocument = [input getDocument:error];
+	[self handleExecution:input parameters:parameters finished:^(xmlDocPtr outputDocument, NSArray<NSError *> * _Nullable errors) {
+		if ( outputDocument ) {
+			xsltSaveResultToFilename([filePath UTF8String], outputDocument, [self xsltStylesheet], 0);
+		} else if ( error ) {
+			*error = [errors firstObject];
+		}
+	}];
+}
+
+- (void)handleExecution:(id<CYInputSource>)input
+			 parameters:(NSDictionary<NSString *,id> *)parameters
+			   finished:(void (^)(xmlDocPtr outputDocument, NSArray<NSError *> * _Nullable errors))callback {
+	NSError *error = nil;
+	xmlDocPtr inputDocument = [input getDocument:&error];
 	if ( inputDocument == NULL ) {
+		callback(NULL, @[error]);
 		return;
 	}
 	
 	NSMutableDictionary *xpathParameters = [parameters mutableCopy]; // to keep XPath converted values in memory during transform
 	const char **params = [self convertParameters:parameters toXSLTForm:xpathParameters];
 	
+	CYTemplateContext *context = [[CYTemplateContext alloc] initWithTemplate:self];
+	context.inputSourceResolver = self.inputSourceResolver;
+	[NSThread currentThread].threadDictionary[kTemplateContextThreadKey] = context;
+
 	xmlDocPtr outputDocument = NULL;
 	xsltTransformContextPtr ctxt = NULL;
 	xsltStylesheetPtr xform = [self xsltStylesheet];
 	if ( xform == NULL ) {
-		if ( error && parsingError ) {
-			*error = parsingError;
+		if ( parsingError ) {
+			error = parsingError;
 		}
 	} else {
 		ctxt = xsltNewTransformContext(xform, inputDocument);
+		ctxt->error = &xsltGenericErrorFunc;
 		// TODO: xsltSetCtxtParseOptions(ctxt, options);
 		outputDocument = xsltApplyStylesheetUser(xform, inputDocument, params, NULL, NULL, ctxt);
 	}
 	
-	xsltSaveResultToFilename([filePath UTF8String], outputDocument, xform, 0);
+	callback(outputDocument, context.errors);
+	
+	[[NSThread currentThread].threadDictionary removeObjectForKey:kTemplateContextThreadKey];
 	
 	if ( params != NULL ) {
 		free(params);
@@ -203,3 +211,47 @@
 }
 
 @end
+
+static xmlDocPtr xsltLoaderFunc(const xmlChar * URI, xmlDictPtr dict, int options, void *ctxt, xsltLoadType type) {
+	xmlDocPtr result = NULL;
+	
+	// try default loader first
+	if ( xsltDocBuiltInLoader ) {
+		result = xsltDocBuiltInLoader(URI, dict, options, ctxt, type);		
+		if ( result != NULL ) {
+			return result;
+		}
+	}
+	
+	// look for resolver in threat dict
+	id<CYInputSourceResolver> resolver = nil;
+	id context = [NSThread currentThread].threadDictionary[kTemplateContextThreadKey];
+	if ( [context isKindOfClass:[CYTemplateContext class]] ) {
+		resolver = ((CYTemplateContext *)context).inputSourceResolver;
+	}
+	if ( resolver ) {
+		NSString *uri = [NSString stringWithUTF8String:(const char *)URI];
+		id<CYInputSource> input = [resolver resolveInputSourceFromURI:uri options:(CYParsingOptions)options];
+		NSError *error = nil;
+		result = [input newDocument:&error];
+	}
+	
+	return result;
+}
+
+static void xsltGenericErrorFunc(void *ctxt, const char *msg, ...) {
+	id obj = [NSThread currentThread].threadDictionary[kTemplateContextThreadKey];
+	CYTemplateContext *ctx = nil;
+	if ( [obj isKindOfClass:[CYTemplateContext class]] ) {
+		ctx = obj;
+	}
+	NSString *message = [NSString stringWithUTF8String:msg];
+	NSError *error = [NSError errorWithDomain:CYErrorDomain code:CYTemplateErrorExecutionFailure userInfo:@{NSLocalizedDescriptionKey : message}];
+	NSArray *errors = ctx.errors;
+	if ( errors ) {
+		errors = [errors arrayByAddingObject:error];
+	} else {
+		errors = [[NSArray alloc] initWithObjects:error, nil];
+	}
+	ctx.errors = errors;
+}

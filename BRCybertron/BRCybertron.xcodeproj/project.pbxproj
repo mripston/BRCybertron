@@ -49,6 +49,8 @@
 		C9435EAF1C8CE2FF00C323E9 /* TestResources in Resources */ = {isa = PBXBuildFile; fileRef = C9435EAE1C8CE2FF00C323E9 /* TestResources */; };
 		C9435EB11C8D1E5D00C323E9 /* CYFileInputSourceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C9435EB01C8D1E5D00C323E9 /* CYFileInputSourceTests.m */; };
 		C9435EB41C8D1FFC00C323E9 /* CYInputSourceSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = C9435EB31C8D1FFC00C323E9 /* CYInputSourceSupport.m */; };
+		C95B0B2A1C91031A008DF6CC /* CYBundleInputSourceResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = C95B0B291C91031A008DF6CC /* CYBundleInputSourceResolver.m */; };
+		C95B0B2D1C91102D008DF6CC /* CYTemplateContext.m in Sources */ = {isa = PBXBuildFile; fileRef = C95B0B2C1C91102D008DF6CC /* CYTemplateContext.m */; };
 		C99090B21C8E72880006EFD7 /* CYSimpleEntityResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = C99090B11C8E72880006EFD7 /* CYSimpleEntityResolver.m */; };
 		C99090B51C8E73210006EFD7 /* CYSimpleEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = C99090B41C8E73210006EFD7 /* CYSimpleEntity.m */; };
 		C99090B81C8E75B10006EFD7 /* CYParsingContext.m in Sources */ = {isa = PBXBuildFile; fileRef = C99090B71C8E75B10006EFD7 /* CYParsingContext.m */; };
@@ -165,6 +167,11 @@
 		C9435EB21C8D1FFC00C323E9 /* CYInputSourceSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYInputSourceSupport.h; sourceTree = "<group>"; };
 		C9435EB31C8D1FFC00C323E9 /* CYInputSourceSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYInputSourceSupport.m; sourceTree = "<group>"; };
 		C9435ED91C8D3A4A00C323E9 /* BRCybertron.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRCybertron.h; sourceTree = "<group>"; };
+		C95B0B271C9101AF008DF6CC /* CYInputSourceResolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYInputSourceResolver.h; sourceTree = "<group>"; };
+		C95B0B281C91031A008DF6CC /* CYBundleInputSourceResolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYBundleInputSourceResolver.h; sourceTree = "<group>"; };
+		C95B0B291C91031A008DF6CC /* CYBundleInputSourceResolver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYBundleInputSourceResolver.m; sourceTree = "<group>"; };
+		C95B0B2B1C91102D008DF6CC /* CYTemplateContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYTemplateContext.h; sourceTree = "<group>"; };
+		C95B0B2C1C91102D008DF6CC /* CYTemplateContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYTemplateContext.m; sourceTree = "<group>"; };
 		C99090AB1C8E5CDA0006EFD7 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../../README.md; sourceTree = "<group>"; };
 		C99090AF1C8E716F0006EFD7 /* CYEntityResolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYEntityResolver.h; sourceTree = "<group>"; };
 		C99090B01C8E72880006EFD7 /* CYSimpleEntityResolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYSimpleEntityResolver.h; sourceTree = "<group>"; };
@@ -239,6 +246,8 @@
 		C923CED61C8920C000AFD0D5 /* BRCybertron */ = {
 			isa = PBXGroup;
 			children = (
+				C95B0B281C91031A008DF6CC /* CYBundleInputSourceResolver.h */,
+				C95B0B291C91031A008DF6CC /* CYBundleInputSourceResolver.m */,
 				C9435EA41C8CA8B600C323E9 /* CYConstants.h */,
 				C9435E9E1C8CA8B600C323E9 /* CYConstants.m */,
 				C9435EA31C8CA8B600C323E9 /* CYDataInputSource.h */,
@@ -248,6 +257,7 @@
 				C9435EA01C8CA8B600C323E9 /* CYFileInputSource.h */,
 				C9435EA21C8CA8B600C323E9 /* CYFileInputSource.m */,
 				C9435EA11C8CA8B600C323E9 /* CYInputSource.h */,
+				C95B0B271C9101AF008DF6CC /* CYInputSourceResolver.h */,
 				C9435EB21C8D1FFC00C323E9 /* CYInputSourceSupport.h */,
 				C9435EB31C8D1FFC00C323E9 /* CYInputSourceSupport.m */,
 				C99090B61C8E75B10006EFD7 /* CYParsingContext.h */,
@@ -258,6 +268,8 @@
 				C99090B11C8E72880006EFD7 /* CYSimpleEntityResolver.m */,
 				C9435EA51C8CA8B600C323E9 /* CYTemplate.h */,
 				C9435E9F1C8CA8B600C323E9 /* CYTemplate.m */,
+				C95B0B2B1C91102D008DF6CC /* CYTemplateContext.h */,
+				C95B0B2C1C91102D008DF6CC /* CYTemplateContext.m */,
 				C9435E9D1C8CA8B600C323E9 /* CYUtilities.h */,
 				C9435E9C1C8CA8B600C323E9 /* CYUtilities.m */,
 			);
@@ -575,6 +587,7 @@
 				C923CF371C8921A300AFD0D5 /* saxon.c in Sources */,
 				C99090B81C8E75B10006EFD7 /* CYParsingContext.m in Sources */,
 				C9435EA61C8CA8B600C323E9 /* CYDataInputSource.m in Sources */,
+				C95B0B2A1C91031A008DF6CC /* CYBundleInputSourceResolver.m in Sources */,
 				C923CF1E1C89215500AFD0D5 /* variables.c in Sources */,
 				C923CF101C89215500AFD0D5 /* imports.c in Sources */,
 				C923CF381C8921A300AFD0D5 /* sets.c in Sources */,
@@ -595,6 +608,7 @@
 				C923CF181C89215500AFD0D5 /* xsltutils.c in Sources */,
 				C923CF2F1C8921A300AFD0D5 /* crypto.c in Sources */,
 				C923CF1B1C89215500AFD0D5 /* extra.c in Sources */,
+				C95B0B2D1C91102D008DF6CC /* CYTemplateContext.m in Sources */,
 				C923CF311C8921A300AFD0D5 /* functions.c in Sources */,
 				C923CF1A1C89215500AFD0D5 /* documents.c in Sources */,
 				C923CF191C89215500AFD0D5 /* attrvt.c in Sources */,
