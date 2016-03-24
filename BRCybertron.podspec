@@ -39,8 +39,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'Core' do |as|
 	  as.dependency 'BRCybertron/libxslt'
-	  as.source_files = "BRCybertron/BRCybertron/*.{h,m}",
-						"BRCybertron/Packaging/*.h"
+	  as.source_files = 'BRCybertron/Packaging/BRCybertron.h', 'BRCybertron/BRCybertron'
   end
 
 end
