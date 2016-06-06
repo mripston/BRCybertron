@@ -57,6 +57,89 @@ memory via an `NSData` object as well as [CYFileInputSource][CYFileInputSource] 
 parsing XML from a file.
 
 
+# XSLT transformations
+
+The `CYTemplate` class represents a parsed, reusable XSLT document. You can create
+instances from `NSData` objects:
+
+```objc
+// create from NSData instance
+NSData *xsltData = ...;
+CYTemplate *xslt = [CYTemplate templateWithData:xsltData];
+```
+
+or from a file:
+
+```objc
+// create from a file
+NSString *pathToXsltFile = ...;
+CYTemplate *xslt = [CYTemplate templateWithContentsOfFile:pathToXsltFile];
+```
+
+Once you have your template instance, you can run as many transformations on it
+as needed, by either transforming into a string:
+
+```objc
+id<CYInputSource> xml = ...;
+NSError *error = nil;
+NSString *result = [xslt transformToString:xml parameters:nil error:&error];
+```
+
+or to a file:
+
+```objc
+id<CYInputSource> xml = ...;
+NSString *pathToOutputFile = ...;
+NSError *error = nil;
+[xslt transform:xml parameters:nil toFile:pathToOutputFile error:&error];
+```
+
+
+# XSLT parameters
+
+You can pass string parameters into the transformation, which will be available as top-level
+`<xsl:param>` elements in the XSLT document. Just pass a dictionary to the `transform*`
+methods, where the keys are the names of the parameters you want to pass in. For example,
+in the following XSLT:
+
+```xslt
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	exclude-result-prefixes="xs xml"
+	version="1.0">
+	<xsl:output method="html" version="5.0" encoding="UTF-8" indent="yes" />
+
+	<xsl:param name="first-name"/>
+
+	<xsl:template match="passage">
+		<html>
+			<body>
+				<p>Hello, <xsl:value-of select="$first-name"/>.</p>
+			</body>
+		</html>
+	</xsl:template>
+</xsl:stylesheet>
+```
+
+we can pass a `first-name` parameter like this:
+
+```objc
+id<CYInputSource> xml = ...;
+NSError *error = nil;
+NSString *result = [xslt transformToString:xml parameters:@{ @"first-name" : @"Bob" } error:&error];
+```
+
+and (given the proper input XML) would transform into:
+
+```html
+<html>
+  <body>
+    <p>Hello, Bob.</p>
+  </body>
+</html>
+```
+
+
 # xsl:import and xsl:include support
 
 When using file-based XSL documents, both `xsl:import` and `xsl:include` statements
