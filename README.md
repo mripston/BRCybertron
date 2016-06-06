@@ -1,7 +1,13 @@
 # BRCybertron - セイバートロン
 
 BRCybertron is an Objective-C framework for executing XSLT 1.0 transforms. It is
-implemented as a lightweight wrapper around [libxslt](http://xmlsoft.org/XSLT/).
+implemented as a lightweight wrapper around [libxslt](http://xmlsoft.org/XSLT/)
+and [libxml](http://xmlsoft.org/).
+
+BRCybertron has been designed for running on iOS, which does not provide `libxslt`.
+Thus `libxslt` (version 1.1.28) is statically compiled into BRCybertron. The goal
+of the project is to make it so you can remain in lovely Objective-C land without
+having to dig down, down, down into the `libxslt/xml` C APIs.
 
 # ~~Robots~~ Documents in Disguise
 
@@ -49,6 +55,89 @@ includes support for parsing XML documents via the [CYInputSource][CYInputSource
 API, and provides [CYDataInputSource][CYDataInputSource] for parsing XML held in
 memory via an `NSData` object as well as [CYFileInputSource][CYFileInputSource] for
 parsing XML from a file.
+
+
+# XSLT transformations
+
+The `CYTemplate` class represents a parsed, reusable XSLT document. You can create
+instances from `NSData` objects:
+
+```objc
+// create from NSData instance
+NSData *xsltData = ...;
+CYTemplate *xslt = [CYTemplate templateWithData:xsltData];
+```
+
+or from a file:
+
+```objc
+// create from a file
+NSString *pathToXsltFile = ...;
+CYTemplate *xslt = [CYTemplate templateWithContentsOfFile:pathToXsltFile];
+```
+
+Once you have your template instance, you can run as many transformations on it
+as needed, by either transforming into a string:
+
+```objc
+id<CYInputSource> xml = ...;
+NSError *error = nil;
+NSString *result = [xslt transformToString:xml parameters:nil error:&error];
+```
+
+or to a file:
+
+```objc
+id<CYInputSource> xml = ...;
+NSString *pathToOutputFile = ...;
+NSError *error = nil;
+[xslt transform:xml parameters:nil toFile:pathToOutputFile error:&error];
+```
+
+
+# XSLT parameters
+
+You can pass string parameters into the transformation, which will be available as top-level
+`<xsl:param>` elements in the XSLT document. Just pass a dictionary to the `transform*`
+methods, where the keys are the names of the parameters you want to pass in. For example,
+in the following XSLT:
+
+```xslt
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	exclude-result-prefixes="xs xml"
+	version="1.0">
+	<xsl:output method="html" version="5.0" encoding="UTF-8" indent="yes" />
+
+	<xsl:param name="first-name"/>
+
+	<xsl:template match="passage">
+		<html>
+			<body>
+				<p>Hello, <xsl:value-of select="$first-name"/>.</p>
+			</body>
+		</html>
+	</xsl:template>
+</xsl:stylesheet>
+```
+
+we can pass a `first-name` parameter like this:
+
+```objc
+id<CYInputSource> xml = ...;
+NSError *error = nil;
+NSString *result = [xslt transformToString:xml parameters:@{ @"first-name" : @"Bob" } error:&error];
+```
+
+and (given the proper input XML) would transform into:
+
+```html
+<html>
+  <body>
+    <p>Hello, Bob.</p>
+  </body>
+</html>
+```
 
 
 # xsl:import and xsl:include support
