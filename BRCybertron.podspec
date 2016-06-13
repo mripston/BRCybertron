@@ -34,7 +34,9 @@ Pod::Spec.new do |s|
 	as.source_files = "BRCybertron/libxslt/**/*.h",
 					  "libxslt/libxslt/*.{h,c}",
 					  "libxslt/libexslt/*.{h,c}"
-	as.private_header_files = "**/*.h"
+	as.private_header_files = "BRCybertron/libxslt/**/*.h",
+							  "libxslt/libxslt/*.h",
+							  "libxslt/libexslt/*.h"
   end
 
   s.subspec 'Core' do |as|

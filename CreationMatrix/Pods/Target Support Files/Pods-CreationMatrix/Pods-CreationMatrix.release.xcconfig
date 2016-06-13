@@ -1,5 +1,8 @@
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
 HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2" "$(SDKROOT)/usr/include/libxml2" "${PODS_ROOT}/Headers/Private/BRCybertron/BRCybertron/libxslt" "${PODS_ROOT}/Headers/Private/BRCybertron/libxslt" $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/BRCybertron" "${PODS_ROOT}/Headers/Public/JSONSyntaxHighlight"
+LIBRARY_SEARCH_PATHS = $(inherited) "$PODS_CONFIGURATION_BUILD_DIR/BRCybertron" "$PODS_CONFIGURATION_BUILD_DIR/JSONSyntaxHighlight"
 OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/BRCybertron" -isystem "${PODS_ROOT}/Headers/Public/JSONSyntaxHighlight"
 OTHER_LDFLAGS = $(inherited) -ObjC -l"BRCybertron" -l"JSONSyntaxHighlight" -l"xml2" -framework "UIKit"
+PODS_BUILD_DIR = $BUILD_DIR
+PODS_CONFIGURATION_BUILD_DIR = $PODS_BUILD_DIR/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
 PODS_ROOT = ${SRCROOT}/Pods

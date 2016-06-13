@@ -1,8 +1,8 @@
 {
   "name": "BRCybertron",
-  "version": "0.1.0",
+  "version": "1.1.0",
   "summary": "Objective-C XSLT processor.",
-  "description": "This project provides a way to run XSLT transformations on XML\ndocuments, using `libxslt`.",
+  "description": "This project provides a simple way to run XSLT 1.0 transformations on XML\ndocuments in Objective-C.",
   "homepage": "https://github.com/Blue-Rocket/BRCybertron",
   "license": "MIT",
   "authors": {
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/Blue-Rocket/BRCybertron.git",
-    "tag": "0.1.0",
+    "tag": "1.1.0",
     "submodules": true
   },
   "libraries": "xml2",
@@ -35,7 +35,11 @@
         "libxslt/libxslt/*.{h,c}",
         "libxslt/libexslt/*.{h,c}"
       ],
-      "private_header_files": "**/*.h"
+      "private_header_files": [
+        "BRCybertron/libxslt/**/*.h",
+        "libxslt/libxslt/*.h",
+        "libxslt/libexslt/*.h"
+      ]
     },
     {
       "name": "Core",
