@@ -1,9 +1,9 @@
 PODS:
-  - BRCybertron (0.1.0):
-    - BRCybertron/Core (= 0.1.0)
-  - BRCybertron/Core (0.1.0):
+  - BRCybertron (1.1.0):
+    - BRCybertron/Core (= 1.1.0)
+  - BRCybertron/Core (1.1.0):
     - BRCybertron/libxslt
-  - BRCybertron/libxslt (0.1.0)
+  - BRCybertron/libxslt (1.1.0)
   - JSONSyntaxHighlight (1.0.0)
 
 DEPENDENCIES:
@@ -15,7 +15,9 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  BRCybertron: a2e74eea9a1d53e854befbc12303fe8918cc87dd
+  BRCybertron: 6a6f9c681e115651d97c38ae8c01f58d050a84c5
   JSONSyntaxHighlight: 8685d8ad0259b909dc97a829fdfbefbec363f449
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: 6d30a32db982b59477d3a904cfd6a8eb40b18bcd
+
+COCOAPODS: 1.0.1
