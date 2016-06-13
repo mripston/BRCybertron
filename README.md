@@ -5,7 +5,7 @@ implemented as a lightweight wrapper around [libxslt](http://xmlsoft.org/XSLT/)
 and [libxml](http://xmlsoft.org/).
 
 BRCybertron has been designed for running on iOS, which does not provide `libxslt`.
-Thus `libxslt` (version 1.1.28) is statically compiled into BRCybertron. The goal
+Thus `libxslt` (version 1.1.29) is statically compiled into BRCybertron. The goal
 of the project is to make it so you can remain in lovely Objective-C land without
 having to dig down, down, down into the `libxslt/xml` C APIs.
 
