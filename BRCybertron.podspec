@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "BRCybertron"
-  s.version      = "1.0.0"
+  s.version      = "1.1.0"
   s.summary      = "Objective-C XSLT processor."
   s.description  = <<-DESC
                    This project provides a simple way to run XSLT 1.0 transformations on XML
@@ -34,7 +34,9 @@ Pod::Spec.new do |s|
 	as.source_files = "BRCybertron/libxslt/**/*.h",
 					  "libxslt/libxslt/*.{h,c}",
 					  "libxslt/libexslt/*.{h,c}"
-	as.private_header_files = "**/*.h"
+	as.private_header_files = "BRCybertron/libxslt/**/*.h",
+							  "libxslt/libxslt/*.h",
+							  "libxslt/libexslt/*.h"
   end
 
   s.subspec 'Core' do |as|
