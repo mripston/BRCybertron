@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "BRCybertron"
-  s.version      = "1.1.0"
+  s.version      = "1.1.1"
   s.summary      = "Objective-C XSLT processor."
   s.description  = <<-DESC
                    This project provides a simple way to run XSLT 1.0 transformations on XML
