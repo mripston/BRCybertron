@@ -185,6 +185,7 @@ static NSString * const kTemplateContextThreadKey = @"CYTemplate.Context";
 	if ( xform == NULL ) {
 		if ( parsingError ) {
 			error = parsingError;
+            context.errors = @[error];
 		}
 	} else {
 		ctxt = xsltNewTransformContext(xform, inputDocument);
