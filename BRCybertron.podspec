@@ -27,7 +27,9 @@ Pod::Spec.new do |s|
   s.subspec 'libxslt' do |as|
 	as.xcconfig = {
 		'HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/Headers/Private/BRCybertron/BRCybertron/libxslt" ' +
-								'"${PODS_ROOT}/Headers/Private/BRCybertron/libxslt"'
+								'"${PODS_ROOT}/Headers/Private/BRCybertron/libxslt" ' +
+								'"${PODS_ROOT}/BRCybertron/BRCybertron/libxslt" ' +
+								'"${PODS_ROOT}/BRCybertron/libxslt" '
 	}
 	as.header_mappings_dir = '.'
   	as.requires_arc = false
