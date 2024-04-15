@@ -201,7 +201,7 @@
 
 
 /* Version number of package */
-#define VERSION "1.1.29"
+#define VERSION "1.1.34"
 
 /* Define if debugging support is enabled */
 /* #define WITH_DEBUGGER */
